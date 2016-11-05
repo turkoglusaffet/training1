@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:c="http://www.springframework.org/schema/c" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd">
+
+
+	<context:property-placeholder location="classpath:info.properties" />
+
+
+<bean id="tvBean" class="com.spring.training.bean.TvBean">
+<property name="inch" value="14"></property>
+<property name="model" value="HP"></property>
+</bean>
+
+<bean id="computerBean" class="com.spring.training.bean.ComputerBean">
+<property name="model" value="#{tvBean.model}"></property>
+<property name="ramSize" value="25"></property>
+</bean>
+
+	<util:list id="techList">
+		<value>
+			Java
+			Spring
+		</value>
+	</util:list>
+
+	<bean id="shopBean" class="com.spring.training.bean.ShopBean">
+		<property name="techList">
+			<list>
+				<value>Java</value>
+				<value>Spring</value>
+			</list>
+		</property>
+		<property name="keyMap">
+			<map>
+				<entry key="J" value="Java"></entry>
+				<entry key="S" value="Spring"></entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="baseCustomerBean" class="com.spring.training.bean.CustomerBean"
+		p:techList-ref="techList">
+		<property name="country" value="Turkey" />
+	</bean>
+
+	<bean id="customerBean" parent="baseCustomerBean">
+		<property name="action" value="buy" />
+		<property name="type" value="1" />
+	</bean>
+
+	<bean id="schoolBean" class="com.spring.training.bean.SchoolBean"
+		p:name="${name}">
+		<constructor-arg name="level" value="${level}">
+		</constructor-arg>
+		<property name="students">
+			<list>
+				<value>Saffet Turkoglu</value>
+				<value>Ahmet Tutal</value>
+				<value>Mehmet Dagdelen</value>
+			</list>
+		</property>
+
+	</bean>
+	<bean id="addressBean" class="com.spring.training.bean.AddressBean">
+		<property name="country" value="Turkey"></property>
+		<property name="city" value="Kocaeli"></property>
+		<property name="address" value="Yuvacik"></property>
+	</bean>
+	<bean id="employeeBean" class="com.spring.training.bean.EmployeeBean"
+		init-method="init" destroy-method="destroy">
+		<property name="firstName" value="Saffet"></property>
+		<property name="lastName" value="Turkoglu"></property>
+		<property name="address" ref="addressBean"></property>
+		<property name="email" value="turkoglusaffet@gmail.om"></property>
+	</bean>
+	<bean id="departmantITBean" class="com.spring.training.bean.DepartmantBeanFactory"
+		factory-method="getDepartmantIT"></bean>
+	<bean id="departmantHRBean" class="com.spring.training.bean.DepartmantBeanFactory"
+		factory-method="getDepartmantHR"></bean>
+
+
+</beans>
